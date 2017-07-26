@@ -31,8 +31,8 @@ import random
 #
 # NOTE: Landmark coordinates are given in (y, x) form and NOT
 # in the traditional (x, y) format!
-
-landmarks  = [[0.0, 100.0], [0.0, 0.0], [100.0, 0.0], [100.0, 100.0]] # position of 4 landmarks
+# position of 4 landmarks in (y, x) form
+landmarks  = [[0.0, 100.0], [0.0, 0.0], [100.0, 0.0], [100.0, 100.0]] 
 world_size = 100.0 # world is NOT cyclic. Robot is allowed to travel "out of bounds"
 max_steering_angle = pi/4 # You don't need to use this value, but it is good to keep in mind the limitations of a real car.
 
@@ -116,9 +116,13 @@ class robot:
         return result # make sure your move function returns an instance
                       # of the robot class with the correct coordinates.
                       
-    ############## ONLY ADD/MODIFY CODE ABOVE HERE ####################
-        
-
+    def sense(self): 
+        Z = []
+        for landmark in landmarks:
+            bearing = atan2(landmark[0] - self.y, landmark[1] - self.x) - self.orientation
+            bearing %= 2 * pi
+            Z.append(bearing)
+        return Z
 ## IMPORTANT: You may uncomment the test cases below to test your code.
 ## But when you submit this code, your test cases MUST be commented
 ## out. Our testing program provides its own code for testing your
@@ -201,3 +205,14 @@ for t in range(T):
 ## move function with randomized motion data.
 
 
+length = 20.
+bearing_noise  = 0.0
+steering_noise = 0.0
+distance_noise = 0.0
+
+myrobot = robot(length)
+myrobot.set(30.0, 20.0, 0.0)
+myrobot.set_noise(bearing_noise, steering_noise, distance_noise)
+
+print 'Robot:        ', myrobot
+print 'Measurements: ', myrobot.sense()
