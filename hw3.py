@@ -97,8 +97,8 @@ class robot:
 
         # ADD CODE HERE
         
-        d = motion[1]
-        steering_angle = motion[0]
+        d = motion[1] + random.gauss(0,self.distance_noise)
+        steering_angle = motion[0] + random.gauss(0, self.steering_noise)
         beta = tan(steering_angle) * d / self.length
         if(abs(beta) < 0.001):
             x = self.x + d * cos(self.orientation)
@@ -120,6 +120,7 @@ class robot:
         Z = []
         for landmark in landmarks:
             bearing = atan2(landmark[0] - self.y, landmark[1] - self.x) - self.orientation
+            bearing += random.gauss(0,self.bearing_noise)
             bearing %= 2 * pi
             Z.append(bearing)
         return Z
