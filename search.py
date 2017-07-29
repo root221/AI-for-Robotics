@@ -88,5 +88,3 @@ def search(grid,init,goal,cost,heuristic):
     else:
         return "fail"
 result = search(grid,init,goal,cost,heuristic)
-for i in result:
-    print(i)
